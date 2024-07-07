@@ -58,9 +58,9 @@ do
     if [[ -z $WINNER_ID ]]
     then 
       TEAM_WIN_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$WINNER'")
+    # if found
     else 
       TEAM_WIN_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$WINNER'")
-      # TEAM_WIN_ID=$($PSQL "SELECT winner_id FROM games INNER JOIN teams ON games.winner_id = teams.team_id WHERE name='$WINNER'")
     fi
     
     
@@ -70,13 +70,12 @@ do
     if [[ -z $OPPONENT_ID ]]
     then 
       TEAM_OPP_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'")
+    # if found
     else 
       TEAM_OPP_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'")
-      # echo hello
-      # TEAM_OPP_ID=$($PSQL "SELECT opponent_id FROM games INNER JOIN teams ON games.opponent_id = teams.team_id WHERE name='$OPPONENT'")
     fi
 
-    # should propably check if all of the games inserted are unique
+    # insert data from csv file into database
     INSERT_GAME_RESULT=$($PSQL "INSERT INTO games(year, round, winner_id, opponent_id, winner_goals, opponent_goals) VALUES($YEAR, '$ROUND', $TEAM_WIN_ID, $TEAM_OPP_ID, $WINNER_GOALS, $OPPONENT_GOALS)")
     if [[ $INSERT_GAME_RESULT == "INSERT 0 1" ]]
     then 
