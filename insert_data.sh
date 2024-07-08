@@ -18,7 +18,6 @@ do
     # find all country names and insert into teams
     # get winner team_id
     WIN_TEAM_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$WINNER'")
-    OPP_TEAM_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'")
     # if not found
     if [[ -z $WIN_TEAM_ID ]]
     then 
@@ -40,9 +39,6 @@ do
         echo Inserted into teams, $OPPONENT
       fi
     fi
-
-    WIN_TEAM_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$WINNER'")
-    OPP_TEAM_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'")
 
   fi
 done
@@ -75,7 +71,7 @@ do
       TEAM_OPP_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'")
     fi
 
-    # insert data from csv file into database
+    # insert data from csv file into the database
     INSERT_GAME_RESULT=$($PSQL "INSERT INTO games(year, round, winner_id, opponent_id, winner_goals, opponent_goals) VALUES($YEAR, '$ROUND', $TEAM_WIN_ID, $TEAM_OPP_ID, $WINNER_GOALS, $OPPONENT_GOALS)")
     if [[ $INSERT_GAME_RESULT == "INSERT 0 1" ]]
     then 
@@ -84,5 +80,3 @@ do
   fi
   
 done
-
-
